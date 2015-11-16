@@ -1,0 +1,90 @@
+﻿<ion-view view-title="Events">
+    <ion-tabs class="tabs-dark tabs-icon-top">
+        <ion-tab title="Kontribute" icon="ion-flag">
+            <br />
+            <br />
+
+            <div class="item item-text-wrap">
+                <div class="list" ng-if="attendingEvent">
+                    <label class="item item-input">
+                        <span class="input-label">Name</span>
+                        <input type="text" value="{{name}}">
+                    </label>
+
+                    <label class="item item-input">
+                        <span class="input-label">Date</span>
+                        <input type="number" value="{{date}}">
+                    </label>
+
+                    <label class="item item-input">
+                        <span class="input-label">Time</span>
+                        <input type="number" value="{{time}}">
+                    </label>
+
+                      <label class="item item-input">
+                        <span class="input-label">Location</span>
+                        <input type="text" value="{{address}}">
+                    </label>
+                    <label class="item item-input">
+                        <span class="input-label">Description</span>
+                        <input type="text" value="{{description}}">
+                    </label>
+                    <label class="item item-input">
+                        <span class="input-label">Invited</span>
+                        <input type="text" value="{{users}}">
+                    </label>
+					<label class="item item-input">
+						<input type="text" value="{{list1}}">
+                        <input type="text" value="{{list1name}}">
+                        <input type="text" value="{{list1quantity}}">
+						<button class="button button-block button-email" ng-model="list1quantity" ng-click="list1quantity=list1quantity + 1; createEvent(list1quantity)">kontribute</button>
+                    </label>
+					
+					<label class="item item-input" ng-show="true">
+                        <input type="text" value="{{list1name}}">
+                        <input type="text" value="{{list1quantity}}">
+						<button class="button button-block button-email" ng-model="list1quantity" ng-click="list1quantity=list1quantity + 1; createEvent(list1quantity)">kontribute</button>
+                    </label>
+                    <button class="button button-block button-email" ng-click="getUserDetails()">Get!</button>
+                </div>
+            </div>
+        </ion-tab>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </ion-tab>
+
+        <ion-tab title="Host" icon="ion-person">
+<br>
+
+         <h1> Evetns Hosting</h1>
+        </ion-tab>
+
+        <ion-tab title="Past" icon="ion-clock" href="#/app/past">
+        </ion-tab>
+
+    </ion-tabs>
+</ion-view>
+
