@@ -38,13 +38,15 @@ angular.module('kontribute.controllers', [])
               $scope.address = data.data.event.Address; 
               $scope.description = data.data.event.Description; 
               $scope.users = data.data.event.Users;
-			  $scope.list1 = data.data.event.list1;	
-			  $scope.list1name = data.data.event.list1details.name;
-			  $scope.list1quantity = data.data.event.list1details.quantity;	
-			  $scope.list2 = data.data.event.list2;
-			  $scope.list2name = data.data.event.list2details.name;
-			  $scope.list2quantity = data.data.event.list2details.quantity;	
-			  $scope.list3 = data.data.event.list3;		  
+			  $scope.list1 = data.data.event.List1;	
+			  $scope.list1current = data.data.event.List1details.List1current;
+			  $scope.list1name = data.data.event.List1details.List1name;
+			  $scope.list1quantity = data.data.event.List1details.List1quantity;	
+			  $scope.list2 = data.data.event.List2;
+			  $scope.list2current = data.data.event.List2details.List2current;
+			  $scope.list2name = data.data.event.List2details.List2name;
+			  $scope.list2quantity = data.data.event.List2details.List2quantity;	
+			  $scope.list3 = data.data.event.List3;		  
               console.log(data.data.event.Title); 
 
     
@@ -78,18 +80,25 @@ $scope.breakButton = function(){
 
   } 
 $scope.createEvent = 
-  function(title, date, time, address, description, guests){
-    console.log("here in CTRL", title, date, time, address, description, guests); 
+  function(title, date, time, address, description, guests, list1name, list1quantity){
+    console.log("here in CTRL", title, date, time, address, description, guests, list1name, list1quantity); 
    
-    eventService.createEvent(title, date, time, address, description, guests);
+    eventService.createEvent(title, date, time, address, description, guests, list1name, list1quantity);
     $scope.confirmEvent(); 
     
   }; 
   
 $scope.updatelist1 = 
-  function(list1quantity){
-     eventService.createEvent(list1quantity);
+  function(){
+     eventService.updatelist1();
   }; 
+
+// $scope.updatelist1 = 
+  // function(){
+    // var test = new Firebase("https://torrid-torch-6578.firebaseio.com/chris1/event.json");
+    // test.update({ List1: 'False'});
+  // }; 
+
  
 
 $scope.validation = 

@@ -2,7 +2,7 @@
     .factory('eventFactory', function ($http) {
     
     var factory = {}; 
-    var url = "https://torrid-torch-6578.firebaseio.com/chris.json";
+    var url = "https://torrid-torch-6578.firebaseio.com/chris1.json";
     var eventId = 11; 
 
     factory.createEvent = function(newEvent) {
@@ -16,16 +16,16 @@
             data: jsonValue
         }
 
-            var data = {
-                EventId: 20, 
-                Title: newEvent.Title, 
-                Date: "test", 
-                Time: 7, 
-                Address: "testing", 
-                Description: newEvent.Description, 
-                Users: newEvent.Users
-
-            }
+            // var data = {
+                // EventId: 20, 
+                // Title: newEvent.Title, 
+                // Date: "test", 
+                // Time: 7, 
+                // Address: "testing", 
+                // Description: newEvent.Description, 
+                // Users: newEvent.Users,
+				
+            // }
           
             console.log("this is the data being sent", newEvent); 
         
@@ -37,7 +37,29 @@
                 error(function(data, status, headers, config) {
                     ("error"); 
                 }); 
-
+             }
+			 
+    factory.updatelist1 = function(newUpdate) {
+            var jsonValue = JSON.stringify(newUpdate); 
+            var request = {
+                    method: 'PATCH', 
+                    url: "https://torrid-torch-6578.firebaseio.com/chris1/event.json", 
+                    headers: {
+              'content-type': 'application/x-www-form-urlencoded'
+            },
+            data: jsonValue
+        }
+        
+            console.log("this is the data being sent update", newUpdate); 
+        
+        
+                $http.patch(url, { event: newUpdate})
+                .success(function(data, status, headers, config) {
+                    console.log(data); 
+                }).
+                error(function(data, status, headers, config) {
+                    ("error"); 
+                }); 
              }
 
     factory.getAllUsers = function(number) {

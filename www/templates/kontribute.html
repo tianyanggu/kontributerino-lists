@@ -36,14 +36,15 @@
 					<label class="item item-input">
 						<input type="text" value="{{list1}}">
                         <input type="text" value="{{list1name}}">
-                        <input type="text" value="{{list1quantity}}">
-						<button class="button button-block button-email" ng-model="list1quantity" ng-click="list1quantity=list1quantity + 1; createEvent(list1quantity)">kontribute</button>
+                        <input type="text" value="{{list1current}}">
+						<input type="text" value="{{list1quantity}}">
+						<button class="button button-block button-email" ng-click="updatelist1()">kontribute</button>
                     </label>
 					
 					<label class="item item-input" ng-show="true">
                         <input type="text" value="{{list1name}}">
-                        <input type="text" value="{{list1quantity}}">
-						<button class="button button-block button-email" ng-model="list1quantity" ng-click="list1quantity=list1quantity + 1; createEvent(list1quantity)">kontribute</button>
+                        <input type="text" value="{{list1current}}">
+						<button class="button button-block button-email" ng-model="list1current" ng-click="list1current=list1current + 1; updatelist1(list1current)">kontribute</button>
                     </label>
                     <button class="button button-block button-email" ng-click="getUserDetails()">Get!</button>
                 </div>
