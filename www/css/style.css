@@ -1,1 +1,91 @@
 /* Empty. Add your own CSS if you like */
+.pad { padding: 25px; }
+
+body {
+  cursor: url('http://ionicframework.com/img/finger.png'), auto;
+
+}
+
+.validation {
+	color: red; 
+	font-size: 15px;
+
+}
+
+.back {
+	background-color: black; 
+	
+}
+
+.regular {
+	color: blue; 
+	font-size: 10px;
+
+}
+
+
+
+
+
+.homeImage {
+	background: url(../img/kontributelogo.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    background-color: black; 
+    width: 100%;
+    height: 100px;
+    margin: auto;
+    z-index: 2;
+    position: relative;
+
+
+}
+
+
+.hostImage {
+	background: url(../img/kontributelogo.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    background-color: black; 
+    width: 100%;
+    height: 50px;
+    margin: auto;
+    z-index: 2;
+    position: relative;
+
+
+}
+
+.menuImage {
+	background: url(../img/kontributelogo.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    background-color: black; 
+    width: 100%;
+    height: 400px;
+    margin: auto;
+    z-index: 2;
+    position: relative;
+
+
+}
+
+
+.scroll {
+    height: 100%;
+}
+ 
+#map {
+    width: 100%;
+    height: 50%;
+}
+
+
+#eventCard {
+    background-color: yellow;
+    font-weight: bold;
+     
+}

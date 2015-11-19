@@ -3,48 +3,103 @@ angular.module('kontribute.services', [])
 
         var vm = this; 
         vm.createEvent = createEvent;
+        vm.createLocalEvent = createLocalEvent;
+        vm.createKontributeList = createKontributeList;
+        vm.updatelist1 = updatelist1;
+        vm.updatelist2 = updatelist2;
+        vm.inviteUserToEvent = inviteUserToEvent; 
         vm.data;
         vm.events = {}; 
 
         
 
       
-        function createEvent(title, date, time, address, description, guests, list1name, list1quantity){
-            var newEvent = { 
+        function createEvent(title, date, time, street, city, province, description, guests){
+
+            var globalEvent = { 
                 Title:  title, 
                 Date: date, 
                 Time: time, 
-                Address: address, 
+                Address: street +", "+ city + ", " + province, 
                 Description: description, 
-                Users: guests, 
-				List1: "true",
-				List1details: {
-					List1name: list1name,
-					List1current: "0",
-					List1quantity: list1quantity
-				},
-			}; 
+                Users : guests , 
+            }; 
 
-            console.log(newEvent.Time + " new event"); 
-            eventFactory.createEvent(newEvent); 
+            console.log(globalEvent.Title + " new event"); 
+            eventFactory.createEvent(globalEvent); 
     
              };
-			 
-		function updatelist1(){
-            var newUpdate = { 
-				List1: "false",
-			}; 
 
-            console.log(newUpdate.Time + " new update"); 
-            eventFactory.createEvent(newUpdate); 
+
+        function createKontributeList(list1name, list1quantity, kcount){
+
+            var kontribute = { 
+                List1: kcount,
+                List1details: {
+                    List1name: list1name,
+                },
+                List1detailsc: {
+                    List1current: "0",
+                },
+                List1detailsq: {
+                    List1quantity: list1quantity
+                },
+            }; 
+            
+            eventFactory.createKontributeList(kontribute); 
     
              };
-         
 
-       
+        function updatelist1(changeq){
+
+            var kontribute = { 
+                List1current: changeq,
+            }; 
+            
+            eventFactory.updatelist1(kontribute); 
+        };
+
+        function updatelist2(changeq){
+
+            var kontribute = { 
+                List2current: changeq,
+            }; 
+            
+            eventFactory.updatelist2(kontribute); 
+        };
+
+       function createLocalEvent(title, date, time, street, city, province, description, guests){
+
+            var localEvent = { 
+                Title:  title, 
+                Date: date, 
+                Time: time, 
+                Address: street +", "+ city + ", " + province, 
+                Description: description, 
+                Users : guests , 
+            }; 
+            
+            eventFactory.createLocalEvent(localEvent); 
+    
+             };
    
             
 
+        function inviteUserToEvent(title, date, time, street, city, province, description, guests){
+            var nameOfGuest = guests; 
+
+            var localEvent = { 
+                Title:  title, 
+                Date: date, 
+                Time: time, 
+                Address: street +", "+ city + ", " + province,  
+                Description: description, 
+                Users : guests , 
+            }; 
+            
+            eventFactory.inviteUserToEvent(nameOfGuest, localEvent); 
+    
+             };
          
        
     });

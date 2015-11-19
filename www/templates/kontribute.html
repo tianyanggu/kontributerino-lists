@@ -1,91 +1,51 @@
-﻿<ion-view view-title="Events">
-    <ion-tabs class="tabs-dark tabs-icon-top">
-        <ion-tab title="Kontribute" icon="ion-flag">
-            <br />
-            <br />
+﻿<ion-view view-title="Kontribute">
+        <ion-content class="has-header list-inset">
+        <form name="createEventForm" ng-if="!eventCreation">
+                <div class="item item-text-wrap" ng-class="'regular'"> 
 
-            <div class="item item-text-wrap">
-                <div class="list" ng-if="attendingEvent">
-                    <label class="item item-input">
-                        <span class="input-label">Name</span>
-                        <input type="text" value="{{name}}">
-                    </label>
+                    <div class="item item-divider"> 
+                        <h2>Kontribute List</h2>
+                    </div>
+                        <label class="item item-input item-stacked-label">
+                            <span class="input-label" ng-show="kcount == 1" ng-class="!titleInput ? 'validation' : ''"> Item 1 Name </span>
+                            <input type="text" placeholder="Enter your Event Name here" ng-show="kcount == 1" ng-model="list1name" ng-minlength="1" ng-maxlength="100" required>
+                        </label>
 
-                    <label class="item item-input">
-                        <span class="input-label">Date</span>
-                        <input type="number" value="{{date}}">
-                    </label>
+                        <label class="item item-input item-stacked-label">
+                            <span class="input-label" ng-show="kcount == 1" ng-class="!guestsInput ? 'validation' : ''"> Quantity</span>
+                            <input type="text" placeholder="Invite your Guests Here!" ng-show="kcount == 1" ng-model="list1quantity" ng-minlength="1" ng-maxlength="100" required>
+                        </label>
 
-                    <label class="item item-input">
-                        <span class="input-label">Time</span>
-                        <input type="number" value="{{time}}">
-                    </label>
+                        <label class="item item-input item-stacked-label">
+                            <span class="input-label" ng-show="kcount == 2" ng-class="!titleInput ? 'validation' : ''"> Item 2 Name </span>
+                            <input type="text" placeholder="Enter your Event Name here" ng-show="kcount == 2" ng-model="list1name" ng-minlength="1" ng-maxlength="100" required>
+                        </label>
 
-                      <label class="item item-input">
-                        <span class="input-label">Location</span>
-                        <input type="text" value="{{address}}">
-                    </label>
-                    <label class="item item-input">
-                        <span class="input-label">Description</span>
-                        <input type="text" value="{{description}}">
-                    </label>
-                    <label class="item item-input">
-                        <span class="input-label">Invited</span>
-                        <input type="text" value="{{users}}">
-                    </label>
-					<label class="item item-input">
-						<input type="text" value="{{list1}}">
-                        <input type="text" value="{{list1name}}">
-                        <input type="text" value="{{list1current}}">
-						<input type="text" value="{{list1quantity}}">
-						<button class="button button-block button-email" ng-click="updatelist1()">kontribute</button>
-                    </label>
-					
-					<label class="item item-input" ng-show="true">
-                        <input type="text" value="{{list1name}}">
-                        <input type="text" value="{{list1current}}">
-						<button class="button button-block button-email" ng-model="list1current" ng-click="list1current=list1current + 1; updatelist1(list1current)">kontribute</button>
-                    </label>
-                    <button class="button button-block button-email" ng-click="getUserDetails()">Get!</button>
-                </div>
-            </div>
-        </ion-tab>
+                        <label class="item item-input item-stacked-label">
+                            <span class="input-label" ng-show="kcount == 2" ng-class="!guestsInput ? 'validation' : ''"> Quantity</span>
+                            <input type="text" placeholder="Invite your Guests Here!" ng-show="kcount == 2" ng-model="list1quantity" ng-minlength="1" ng-maxlength="100" required>
+                        </label>
+       
+                    </div>
+
+                        <span class="item text-center item-divider" ng-if="!inputBoxesFilled" ng-class="'validation'">Please fill in highlighted boxes above</span>
+                            <button class="button button-block button-email" ng-click="kcount = kcount + 1; createKontributeList(list1name, list1quantity, kcount)">Create!</button>
+                        </span>
+             </div>
+        </form>
+       
+    
+    </ion-content>
+    <ion-footer-bar>
+        <ion-tabs class="tabs-dark tabs-icon-top">
+            <ion-tab title="Attending" icon="ion-flag" href="#/app/events"></ion-tab>
+            <ion-tab title="Create" icon="ion-wrench" href="#/app/create"></ion-tab>
+            <ion-tab title="Host" icon="ion-person" href="#/app/host"></ion-tab>
+            <ion-tab title="Past" icon="ion-clock" href="#/app/past"></ion-tab>
+            <ion-tab title="Create Kontribute Lists" icon="ion-clock" href="#/app/kontribute"></ion-tab>
+            <ion-tab title="Current Kontribute Lists" icon="ion-clock" href="#/app/currkontribute"></ion-tab>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        </ion-tab>
-
-        <ion-tab title="Host" icon="ion-person">
-<br>
-
-         <h1> Evetns Hosting</h1>
-        </ion-tab>
-
-        <ion-tab title="Past" icon="ion-clock" href="#/app/past">
-        </ion-tab>
-
-    </ion-tabs>
+        </ion-tabs>
+    </ion-footer-bar>
 </ion-view>
-

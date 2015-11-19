@@ -1,75 +1,136 @@
-﻿﻿angular.module('kontribute.factories', [])
+﻿angular.module('kontribute.factories', [])
     .factory('eventFactory', function ($http) {
     
     var factory = {}; 
-    var url = "https://torrid-torch-6578.firebaseio.com/chris1.json";
     var eventId = 11; 
 
     factory.createEvent = function(newEvent) {
-            var jsonValue = JSON.stringify(newEvent); 
-            var request = {
-                    method: 'PUT', 
-                    url: url, 
-                    headers: {
-              'content-type': 'application/x-www-form-urlencoded'
-            },
-            data: jsonValue
-        }
-
-            // var data = {
-                // EventId: 20, 
-                // Title: newEvent.Title, 
-                // Date: "test", 
-                // Time: 7, 
-                // Address: "testing", 
-                // Description: newEvent.Description, 
-                // Users: newEvent.Users,
-				
-            // }
-          
-            console.log("this is the data being sent", newEvent); 
-        
-        
+                var globalEventTitle = newEvent.Title.toLowerCase(); 
+                var url = "https://torrid-torch-6578.firebaseio.com/" + globalEventTitle + ".json";
                 $http.put(url, { event: newEvent})
                 .success(function(data, status, headers, config) {
                     console.log(data); 
+
                 }).
                 error(function(data, status, headers, config) {
                     ("error"); 
                 }); 
-             }
-			 
-    factory.updatelist1 = function(newUpdate) {
-            var jsonValue = JSON.stringify(newUpdate); 
-            var request = {
-                    method: 'PATCH', 
-                    url: "https://torrid-torch-6578.firebaseio.com/chris1/event.json", 
-                    headers: {
-              'content-type': 'application/x-www-form-urlencoded'
-            },
-            data: jsonValue
-        }
-        
-            console.log("this is the data being sent update", newUpdate); 
-        
-        
-                $http.patch(url, { event: newUpdate})
-                .success(function(data, status, headers, config) {
-                    console.log(data); 
-                }).
-                error(function(data, status, headers, config) {
-                    ("error"); 
-                }); 
+
              }
 
-    factory.getAllUsers = function(number) {
+    factory.createKontributeList = function(kontribute) {
+                var url = "https://torrid-torch-6578.firebaseio.com/imran1/event/klist.json";
+                $http.put(url, { list: kontribute })
+                .success(function(data, status, headers, config) {
+                    console.log(data); 
+                    
+                }).
+                error(function(data, status, headers, config) {
+                    ("error"); 
+                }); 
+
+             }
+
+    factory.updatelist1 = function(kontribute) {
+                var url = "https://torrid-torch-6578.firebaseio.com/imran1/event/klist1/list.json";
+                $http.patch(url, { List1detailsc: kontribute })
+                .success(function(data, status, headers, config) {
+                    console.log(data); 
+                    
+                }).
+                error(function(data, status, headers, config) {
+                    ("error"); 
+                }); 
+
+             }
+
+    factory.updatelist2 = function(kontribute) {
+                var url = "https://torrid-torch-6578.firebaseio.com/imran1/event/klist2/list.json";
+                $http.patch(url, { List2detailsc: kontribute })
+                .success(function(data, status, headers, config) {
+                    console.log(data); 
+                    
+                }).
+                error(function(data, status, headers, config) {
+                    ("error"); 
+                }); 
+
+             }
+
+
+    factory.createLocalEvent = function(localEvent) {
+                var localEventTitle = localEvent.Title.toLowerCase(); 
+                var url = "https://torrid-torch-6578.firebaseio.com/imran1/host/" + localEventTitle + ".json";
+                //var eve = [localEventTitle];
+                $http.put(url, { event: localEvent })
+                .success(function(data, status, headers, config) {
+                    console.log(data); 
+                    
+                }).
+                error(function(data, status, headers, config) {
+                    ("error"); 
+                }); 
+
+             }
+
+
+     factory.inviteUserToEvent = function(guests, eventDetails) {
+                var eventTitle = eventDetails.Title.toLowerCase();
+                var guestName = eventDetails.Users.toLowerCase();  
+                var url = "https://torrid-torch-6578.firebaseio.com/" + guestName + "/invited/" + eventTitle + ".json";
+                //var eve = [localEventTitle];
+                $http.put(url, { event: eventDetails })
+                .success(function(data, status, headers, config) {
+                    console.log(data); 
+                    
+                }).
+                error(function(data, status, headers, config) {
+                    ("error"); 
+                }); 
+
+             }
+
+
+
+    factory.getAllEvents = function(number) {
              console.log("here in FAC"); 
                 return $http.get(url)
                 .success(function (data, status, headers, config) {                
                         console.log(data); 
                 });
         }
-	
+
+    factory.getKontributeLists = function(number) {
+             var url = "https://torrid-torch-6578.firebaseio.com/imran1.json";
+                return $http.get(url)
+                .success(function (data, status, headers, config) {                
+                        console.log(data); 
+                });
+        }
+
+    factory.getAllHostedEvents = function() {
+             var url = "https://torrid-torch-6578.firebaseio.com/imran.json";
+                return $http.get(url)
+                .success(function (data, status, headers, config) {                
+                        console.log(data); 
+                });
+        }
+
+
+   factory.getEventsForMap = function() {
+             var url = "https://torrid-torch-6578.firebaseio.com/chris.json";
+                return $http.get(url)
+                .success(function (data, status, headers, config) {                
+                        console.log(data); 
+                });
+        }
+
+
+
+
+
+
+
 
     return factory;
 });

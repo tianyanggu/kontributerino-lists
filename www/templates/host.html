@@ -1,5 +1,75 @@
-﻿<ion-view view-title="host">
+﻿<ion-view view-title="Hosting">
     <ion-content>
-        <h1> Evetns Hosting</h1>
-    </ion-content>
+ <div class="hostImage"></div>
+    <button class="button button-full button-dark" style="margin-top:0px; margin-bottom:1px; border-style: outset" ng-click="getAllEventsHosting()">
+  Refresh Your Events!
+</button>
+
+      
+<ion-slide-box on-slide-changed="slideHasChanged($index)" ng-init="getAllEventsHosting()">
+  
+  <ion-slide ng-repeat="event in events">
+   
+    <div class="list card">
+
+  <div class="item item-avatar" style="background-color:#C0C0C0 ; color: black ">
+    <h2>{{event.event.Title}}</h2>
+    <h3>{{event.event.Address}}</h3>
+    <p>{{event.event.Time}}</p>
+  </div>
+
+  <div class="item item-body"  style="background-color:#E0E0E0 " >
+    <p>
+      {{event.event.Description}}
+    </p>
+    <p>
+      <a href="#" class="subdued">1 Like</a>
+      <a href="#" class="subdued">5 Comments</a>
+    </p>
+  </div>
+
+  <div class="item tabs tabs-secondary tabs-icon-left" style="background-color: #F8F8F8  ">
+    <a class="tab-item" href="#">
+      <i class="icon ion-thumbsup"></i>
+      Like
+    </a>
+    <a class="tab-item" href="#">
+      <i class="icon ion-chatbox"></i>
+      Comment
+    </a>
+    <a class="tab-item" href="#">
+      <i class="icon ion-share"></i>
+      Share
+    </a>
+  </div>
+
+</div>
+
+
+
+
+  </ion-slide>
+  
+</ion-slide-box>
+    
+
+
+
+  </ion-content>
+
+
+
+    <ion-footer-bar>
+        <ion-tabs class="tabs-dark tabs-icon-top">
+            <ion-tab title="Attending" icon="ion-flag" href="#/app/events"></ion-tab>
+            <ion-tab title="Create" icon="ion-wrench" href="#/app/create"></ion-tab>
+            <ion-tab title="Host" icon="ion-person" href="#/app/host"></ion-tab>
+            <ion-tab title="Past" icon="ion-clock" href="#/app/past"></ion-tab>
+            <ion-tab title="Kontribute Lists" icon="ion-clock" href="#/app/kontribute"></ion-tab>
+            <ion-tab title="Current Kontribute Lists" icon="ion-clock" href="#/app/currkontribute"></ion-tab>
+
+
+        </ion-tabs>
+    </ion-footer-bar>
+   
 </ion-view>
