@@ -1,50 +1,61 @@
-﻿<ion-view view-title="Events">
-        <ion-content>
-            <div class="homeImage"></div>
+﻿<ion-view view-title="Events" ng-controller="MapController">
+       
+
+<ion-content ng-init="getEventsForMap()">
+           
+    
+<div class="eventsImage">  
+</div>
+
+<div id="map" data-tap-disabled="true"> 
+</div>
+
+
+  <ion-toggle toggle-class="toggle-calm" ng-model="showAll" ng-change="plotAllOnMap(showAll)">View All Events On Map</ion-toggle>
+
+  <ion-scroll direction="y" class="root"> 
+
+  <div class="list">
+    
+    <li ng-repeat="event in events">
+    <a class="item item-icon-left" ng-click="plotOnMap(event.event.Address)">
+    <i class="icon ion-calendar"></i>
+    <p>{{event.event.Title}}</p>
+    <span class="item-note">
+    {{event.event.Date | date: "yyyy-MM-dd" }} &nbsp &nbsp
+    {{event.event.Time | date: "HH:mm"}}
+    </span>
+    <p>{{event.event.Address}}</p>
+    </a>
+    </li>
+  </div>
+  </ion-scroll>
+
+
+
+
+
+</ion-content>
     
 
 
+    <div class="tabs tabs-icon-left">
+ <a class="tab-item" href="#/app/events">
+    <i class="icon ion-flag"></i>
+    Attending
+  </a>
+   <a class="tab-item" href="#/app/create">
+    <i class="icon ion-wrench"></i>
+    Create
+  </a>
+   <a class="tab-item" href="#/app/host">
+    <i class="icon ion-person"></i>
+    Hosting
+  </a>
+  
 
+  
+</div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    </ion-content>
-    <ion-footer-bar>
-        <ion-tabs class="tabs-dark tabs-icon-top">
-            <ion-tab title="Attending" icon="ion-flag" href="#/app/events"></ion-tab>
-            <ion-tab title="Create" icon="ion-wrench" href="#/app/create"></ion-tab>
-            <ion-tab title="Host" icon="ion-person" href="#/app/host"></ion-tab>
-            <ion-tab title="Past" icon="ion-clock" href="#/app/past"></ion-tab>
-            <ion-tab title="Kontribute Lists" icon="ion-clock" href="#/app/kontribute"></ion-tab>
-            <ion-tab title="Current Kontribute Lists" icon="ion-clock" href="#/app/currkontribute"></ion-tab>
-
-
-        </ion-tabs>
-    </ion-footer-bar>
+  
 </ion-view>

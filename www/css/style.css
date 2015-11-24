@@ -36,7 +36,6 @@ body {
     width: 100%;
     height: 100px;
     margin: auto;
-    z-index: 2;
     position: relative;
 
 
@@ -50,9 +49,8 @@ body {
     background-position: center;
     background-color: black; 
     width: 100%;
-    height: 50px;
+    height: 70px;
     margin: auto;
-    z-index: 2;
     position: relative;
 
 
@@ -67,7 +65,34 @@ body {
     width: 100%;
     height: 400px;
     margin: auto;
-    z-index: 2;
+    position: relative;
+
+}
+
+
+.eventsImage {
+	background: url(../img/kontributelogo.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    background-color: black; 
+    width: 100%;
+    height: 70px;
+    margin: auto;
+    position: relative;
+
+
+}
+
+.loginImage {
+	background: url(../img/kontributelogo.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    background-color: black; 
+    width: 100%;
+    height: 40%;
+    margin: auto;
     position: relative;
 
 
@@ -80,9 +105,23 @@ body {
  
 #map {
     width: 100%;
-    height: 50%;
+    height: 35%;
 }
 
+
+.root {
+	width: 100%;
+	height: 150px;
+	
+	
+}
+
+.rootHost {
+	width: 100%;
+	height: 400px;
+	
+	
+}
 
 #eventCard {
     background-color: yellow;

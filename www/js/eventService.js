@@ -4,10 +4,10 @@ angular.module('kontribute.services', [])
         var vm = this; 
         vm.createEvent = createEvent;
         vm.createLocalEvent = createLocalEvent;
+        vm.inviteUserToEvent = inviteUserToEvent; 
         vm.createKontributeList = createKontributeList;
         vm.updatelist1 = updatelist1;
         vm.updatelist2 = updatelist2;
-        vm.inviteUserToEvent = inviteUserToEvent; 
         vm.data;
         vm.events = {}; 
 
@@ -29,31 +29,30 @@ angular.module('kontribute.services', [])
             eventFactory.createEvent(globalEvent); 
     
              };
-
-
-        function createKontributeList(list1name, list1quantity, kcount){
+         
+        function createKontributeList(listname, listquantity, kcount){
 
             var kontribute = { 
-                List1: kcount,
-                List1details: {
-                    List1name: list1name,
+                List: kcount,
+                Listdetails: {
+                    Listname: listname,
                 },
-                List1detailsc: {
-                    List1current: "0",
+                Listdetailsc: {
+                    Listcurrent: 0,
                 },
-                List1detailsq: {
-                    List1quantity: list1quantity
+                Listdetailsq: {
+                    Listquantity: listquantity
                 },
             }; 
             
             eventFactory.createKontributeList(kontribute); 
     
-             };
+        };
 
         function updatelist1(changeq){
 
             var kontribute = { 
-                List1current: changeq,
+                Listcurrent: changeq,
             }; 
             
             eventFactory.updatelist1(kontribute); 
@@ -62,13 +61,14 @@ angular.module('kontribute.services', [])
         function updatelist2(changeq){
 
             var kontribute = { 
-                List2current: changeq,
+                Listcurrent: changeq,
             }; 
             
             eventFactory.updatelist2(kontribute); 
         };
 
-       function createLocalEvent(title, date, time, street, city, province, description, guests){
+
+       function createLocalEvent(title, date, time, street, city, province, description, guests, userName){
 
             var localEvent = { 
                 Title:  title, 
@@ -79,7 +79,7 @@ angular.module('kontribute.services', [])
                 Users : guests , 
             }; 
             
-            eventFactory.createLocalEvent(localEvent); 
+            eventFactory.createLocalEvent(localEvent, userName); 
     
              };
    

@@ -19,7 +19,8 @@
              }
 
     factory.createKontributeList = function(kontribute) {
-                var url = "https://torrid-torch-6578.firebaseio.com/imran1/event/klist.json";
+                var num = kontribute.List.toString(); 
+                var url = "https://torrid-torch-6578.firebaseio.com/imran1/event/klist"+ num +".json";
                 $http.put(url, { list: kontribute })
                 .success(function(data, status, headers, config) {
                     console.log(data); 
@@ -33,7 +34,7 @@
 
     factory.updatelist1 = function(kontribute) {
                 var url = "https://torrid-torch-6578.firebaseio.com/imran1/event/klist1/list.json";
-                $http.patch(url, { List1detailsc: kontribute })
+                $http.patch(url, { Listdetailsc: kontribute })
                 .success(function(data, status, headers, config) {
                     console.log(data); 
                     
@@ -46,7 +47,7 @@
 
     factory.updatelist2 = function(kontribute) {
                 var url = "https://torrid-torch-6578.firebaseio.com/imran1/event/klist2/list.json";
-                $http.patch(url, { List2detailsc: kontribute })
+                $http.patch(url, { Listdetailsc: kontribute })
                 .success(function(data, status, headers, config) {
                     console.log(data); 
                     
@@ -57,10 +58,9 @@
 
              }
 
-
-    factory.createLocalEvent = function(localEvent) {
+    factory.createLocalEvent = function(localEvent, userName) {
                 var localEventTitle = localEvent.Title.toLowerCase(); 
-                var url = "https://torrid-torch-6578.firebaseio.com/imran1/host/" + localEventTitle + ".json";
+                var url = "https://torrid-torch-6578.firebaseio.com/"+ userName +"/host/" + localEventTitle + ".json";
                 //var eve = [localEventTitle];
                 $http.put(url, { event: localEvent })
                 .success(function(data, status, headers, config) {
@@ -100,7 +100,7 @@
                 });
         }
 
-    factory.getKontributeLists = function(number) {
+    factory.getKontributeLists = function(userName) {
              var url = "https://torrid-torch-6578.firebaseio.com/imran1.json";
                 return $http.get(url)
                 .success(function (data, status, headers, config) {                
@@ -108,8 +108,8 @@
                 });
         }
 
-    factory.getAllHostedEvents = function() {
-             var url = "https://torrid-torch-6578.firebaseio.com/imran.json";
+    factory.getAllHostedEvents = function(userName) {
+             var url = "https://torrid-torch-6578.firebaseio.com/imran1.json";
                 return $http.get(url)
                 .success(function (data, status, headers, config) {                
                         console.log(data); 
@@ -117,8 +117,8 @@
         }
 
 
-   factory.getEventsForMap = function() {
-             var url = "https://torrid-torch-6578.firebaseio.com/chris.json";
+   factory.getEventsForMap = function(userName) {
+             var url = "https://torrid-torch-6578.firebaseio.com/" +userName+ ".json";
                 return $http.get(url)
                 .success(function (data, status, headers, config) {                
                         console.log(data); 

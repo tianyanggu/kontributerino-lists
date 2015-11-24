@@ -8,7 +8,6 @@
       
 <ion-slide-box on-slide-changed="slideHasChanged($index)" ng-init="getKontributeLists()">
   
-  <ion-slide ng-repeat="event in events">
    
     <div class="list card">
 
@@ -20,11 +19,11 @@
 
   <div class="item tabs tabs-secondary tabs-icon-left" style="background-color: #F8F8F8  ">
     <a class="tab-item" href="#">
-      <i class="icon ion-thumbsup" ng-show="list1current != list1quantity" ng-click="updatelist1(1 * list1current + 1)"></i>
+      <i class="icon ion-thumbsup" ng-show="list1current != list1quantity" ng-click="updatelist1(1 * list1current + 1); getKontributeLists();"></i>
       Kontribute
     </a>
     <a class="tab-item" href="#">
-      <i class="icon ion-thumbsdown" ng-show="list1current != 0" ng-click="updatelist1(1 * list1current - 1)"></i>
+      <i class="icon ion-thumbsdown" ng-show="list1current != 0" ng-click="updatelist1(1 * list1current - 1); getKontributeLists();"></i>
       Un-Kontribute
     </a>
   </div>
@@ -37,11 +36,11 @@
 
   <div class="item tabs tabs-secondary tabs-icon-left" style="background-color: #F8F8F8  ">
     <a class="tab-item" href="#">
-      <i class="icon ion-thumbsup" ng-show="list2current != list2quantity" ng-click="updatelist2(1 * list2current + 1)"></i>
+      <i class="icon ion-thumbsup" ng-show="list2current != list2quantity" ng-click="updatelist2(1 * list2current + 1); getKontributeLists()"></i>
       Kontribute
     </a>
     <a class="tab-item" href="#">
-      <i class="icon ion-thumbsdown" ng-show="list2current != 0" ng-click="updatelist2(1 * list2current - 1)"></i>
+      <i class="icon ion-thumbsdown" ng-show="list2current != 0" ng-click="updatelist2(1 * list2current - 1); getKontributeLists()"></i>
       Un-Kontribute
     </a>
   </div>
@@ -58,18 +57,15 @@
   </ion-content>
 
 
-
-    <ion-footer-bar>
-        <ion-tabs class="tabs-dark tabs-icon-top">
-            <ion-tab title="Attending" icon="ion-flag" href="#/app/events"></ion-tab>
-            <ion-tab title="Create" icon="ion-wrench" href="#/app/create"></ion-tab>
-            <ion-tab title="Host" icon="ion-person" href="#/app/host"></ion-tab>
-            <ion-tab title="Past" icon="ion-clock" href="#/app/past"></ion-tab>
-            <ion-tab title="Kontribute Lists" icon="ion-clock" href="#/app/kontribute"></ion-tab>
-            <ion-tab title="Current Kontribute Lists" icon="ion-clock" href="#/app/currkontribute"></ion-tab>
-
-
-        </ion-tabs>
-    </ion-footer-bar>
+<div class="tabs tabs-icon-left">
+  <a class="tab-item" href="#/app/home">
+    <i class="icon ion-home"></i>
+    Home
+  </a>
+   <a class="tab-item" href="#/app/kontribute">
+    <i class="icon ion-clipboard"></i>
+    New Kontribution List
+  </a>
+  </div>
    
 </ion-view>

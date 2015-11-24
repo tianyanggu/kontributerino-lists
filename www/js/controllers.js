@@ -1,6 +1,6 @@
 angular.module('kontribute.controllers', [])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout, $firebaseAuth, $state, $http, $ionicPopup, $location, $window, eventFactory, eventService) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, $firebaseAuth, $state, $http, $ionicPopup, $location, $window, usersFactory, eventFactory, eventService) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -8,6 +8,19 @@ angular.module('kontribute.controllers', [])
   // listen for the $ionicView.enter event:
   //$scope.$on('$ionicView.enter', function(e) {
   //});
+
+
+  var ref = new Firebase('https://torrid-torch-6578.firebaseio.com');
+  var authData = ref.getAuth();
+
+  try { 
+  var profileInfo = usersFactory.getUser(authData.uid)
+  $scope.userName = authData.uid; 
+  } catch (e) {
+    console.log("not logged in, go log in homie"); 
+  }
+
+   
 
    var vm = this;
    vm.result;
@@ -18,7 +31,7 @@ angular.module('kontribute.controllers', [])
   $scope.eventSubmitted = false; 
   $scope.eventCreation = false; 
   $scope.anotherOne = false; 
-  $scope.attendingEvent = true;
+  $scope.attendingEvent = true; 
   
   //for validation
   $scope.inputBoxesFilled = true; 
@@ -34,13 +47,9 @@ angular.module('kontribute.controllers', [])
   $scope.locationSelected = false; 
 
   $scope.kcount = 1;
+  $scope.kcurr = 1;
   
-
-  $scope.PizzaParty = { Title: 'Pizza Party', Time: '12:00', Address:'New York', Description:'Whoa'}; 
-  $scope.PoopParty = { Title: 'Poop Party', Time: '12:20', Address:'Chiraq', Description:'Hello'}; 
-
-  $scope.events = [$scope.PizzaParty, $scope.PoopParty]; 
-  console.log($scope.events);  
+  $scope.events = [];  
   $scope.votingPoll = 'pollFalse';
   $scope.kontributeList = 'kontributeFalse';
 
@@ -50,22 +59,18 @@ angular.module('kontribute.controllers', [])
 
 $scope.getAllEventsHosting = 
   function() {
-    return eventFactory.getAllHostedEvents().then(function(data){
+    return eventFactory.getAllHostedEvents($scope.userName).then(function(data){
           var array = []; 
           var temp =[];  
           $scope.events = []; 
-          array = Object.keys(data.data.host);  
-          console.log(array);      
+          array = Object.keys(data.data.host);        
           for(var i=0; i < array.length; i++){
-              $scope.events[i] = data.data.host[array[i]]; 
-            
-               console.log($scope.events[i]); 
+              $scope.events[i] = data.data.host[array[i]];  
               }
             
           // array.forEach(function(element) {
           //   $scope.events
           // })
-        console.log($scope.events); 
         $scope.setScope($scope.events); 
       
     });
@@ -99,15 +104,14 @@ $scope.getKontributeLists =
   function() {
     return eventFactory.getKontributeLists().then(function(data){
         $scope.name = data.data.event.Title;
-        $scope.list1 = data.data.event.klist1.list.List1; 
-        $scope.list1current = data.data.event.klist1.list.List1detailsc.List1current;
-        $scope.list1name = data.data.event.klist1.list.List1details.List1name;
-        $scope.list1quantity = data.data.event.klist1.list.List1detailsq.List1quantity; 
-        $scope.list2 = data.data.event.klist2.list.List2;
-        $scope.list2current = data.data.event.klist2.list.List2detailsc.List2current;
-        $scope.list2name = data.data.event.klist2.list.List2details.List2name;
-        $scope.list2quantity = data.data.event.klist2.list.List2detailsq.List2quantity; 
-        $scope.list3 = data.data.event.klist3.list.List3; 
+        $scope.list1 = data.data.event.klist1.list.List; 
+        $scope.list1current = data.data.event.klist1.list.Listdetailsc.Listcurrent;
+        $scope.list1name = data.data.event.klist1.list.Listdetails.Listname;
+        $scope.list1quantity = data.data.event.klist1.list.Listdetailsq.Listquantity; 
+        $scope.list2 = data.data.event.klist2.list.List;
+        $scope.list2current = data.data.event.klist2.list.Listdetailsc.Listcurrent;
+        $scope.list2name = data.data.event.klist2.list.Listdetails.Listname;
+        $scope.list2quantity = data.data.event.klist2.list.Listdetailsq.Listquantity; 
 
       });
   };
@@ -120,12 +124,6 @@ $scope.locationClick = function(){
   }
  
 }
-
-
-
-
-
-
 
 $scope.showEvent = function(){
   $scope.eventCreation = false; 
@@ -151,11 +149,21 @@ $scope.breakButton = function(){
       }); 
 
   } 
+
+  $scope.checkVote = function(votingPoll) {
+  console.log("CheckVote");
+  if(votingPoll == 'pollTrue') {
+    $state.go('app.vote');
+  } else {
+    $state.go('app.kontribution');
+  };
+}
+
+
 $scope.createEvent = 
   function(title, date, time, street, city, province, description, guests){
     console.log("here in CTRL", title, date, time, street, city, province, description, guests); 
-
-  
+   
 if(title == undefined) {
 $scope.titleInput = false;
 } else {
@@ -203,7 +211,7 @@ $scope.guestsInput = true;
        $scope.inputBoxesFilled = false; 
     } else {
 
-    eventService.createEvent(title, date, time, street, city, province, description, guests);
+    eventService.createEvent(title, date, time, street, city, province, description, guests, $scope.userName);
     $scope.confirmEvent(); 
   }
     
@@ -213,19 +221,22 @@ $scope.guestsInput = true;
  
  
 $scope.createLocalEvent = function(title, date, time, street, city, province, description, guests) {
-  eventService.createLocalEvent(title, date, time, street, city, province, description, guests);
+  eventService.createLocalEvent(title, date, time, street, city, province, description, guests, $scope.userName);
 }
 
-$scope.createKontributeList = function(list1name, list1quantity) {
-  eventService.createKontributeList(list1name, list1quantity);
+$scope.createKontributeList = function(listname, listquantity, kcount) {
+  eventService.createKontributeList(listname, listquantity, kcount);
+  $scope.listname = null;
 }
 
 $scope.updatelist1 = function(changeq) {
   eventService.updatelist1(changeq);
+  $window.location.reload();
 }
 
 $scope.updatelist2 = function(changeq) {
   eventService.updatelist2(changeq);
+  $window.location.reload();
 }
 
 $scope.inviteUserToEvent = function(title, date, time, street, city, province, description, guests) {
@@ -237,6 +248,11 @@ $scope.inviteUserToEvent = function(title, date, time, street, city, province, d
 $scope.validation = function(){
   $scope.eventCreation = false; 
 }; 
+
+$scope.returnHome = function() {
+  $state.go('app.home');
+  $window.location.reload();
+};
 
   // Open the login modal
 $scope.login = function() {
@@ -253,24 +269,65 @@ $scope.login = function() {
 
 
 
-
 // Handles login and registration
-.controller('AuthCtrl', function($scope, authFactory, $firebaseAuth, $state, $window, $location ) {
+.controller('AuthCtrl', function($scope, authFactory, $firebaseAuth, $state, $window, $location, usersFactory, $rootScope) {
+  $scope.loginClicked = false;
+  $scope.registerButtonClicked = false;
+  $scope.hideLogin = false; 
+  $scope.hideRegister = false; 
+
+  $scope.loginButtonClicked = function (){
+      if($scope.loginClicked == true){
+        $scope.loginClicked = false; 
+        $scope.hideRegister = false; 
+      } else {
+        $scope.loginClicked = true; 
+        $scope.hideRegister = true; 
+        
+      }
+  }
+$scope.registerButton= function (){
+      if($scope.registerButtonClicked == true){
+        $scope.registerButtonClicked = false; 
+        $scope.hideLogin = false;  
+      } else {
+        $scope.registerButtonClicked = true;
+        $scope.hideLogin = true;  
+
+      }
+  }
+
+
+
+
 
   var firebaseRef = new Firebase('https://torrid-torch-6578.firebaseio.com');
   var auth = $firebaseAuth(firebaseRef);
 
   var authCtrl = this;
 
+  var userModel;
+
   authCtrl.user = {
     email: '',
-    password: ''
+    password: '',
   };
 
+  authCtrl.register = {
+    name: '',
+  };
+
+
     // Perform the login action when the user submits the login form
-  authCtrl.doLogin = function() {
-    authFactory.$authWithPassword(authCtrl.user).then(function(auth){
+  authCtrl.doLogin = function(username, password) {
+
+    console.log(username, password); 
+
+    auth.$authWithPassword(authCtrl.user).then(function(auth){
       $state.go('app.home');
+      console.log(auth.uid);
+ console.log(username, password + "in te fncSFH"); 
+      $window.location.reload();
     }, function(error){
       authCtrl.error = error;
     });
@@ -281,9 +338,15 @@ $scope.login = function() {
     $state.go('app.register');
   }
 
-  authCtrl.signUp = function() {
+  authCtrl.signUp = function(email, password, firstname, lastname) {
+    console.log("signing up" + email, password); 
+
+
     authFactory.$createUser(authCtrl.user).then(function(user){
       $state.go('app.home');
+     console.log(user.uid); 
+      console.log("signing up again" + email, password); 
+      usersFactory.createUser(user.uid, authCtrl.user.email, authCtrl.user.password, firstname, lastname);
       $window.location.reload();
     }, function(error) {
       authCtrl.error = error;
@@ -294,8 +357,62 @@ $scope.login = function() {
 })
 
 // Handles user profile
-.controller('ProfileCtrl', function($state, authFactory, $window, usersFactory) {
+.controller('ProfileCtrl', function($ionicModal, $state, authFactory, $window, usersFactory, $http, $scope, $rootScope) {
   var profileCtrl = this;
+
+  var ref = new Firebase('https://torrid-torch-6578.firebaseio.com/');
+  var usersRef = new Firebase('https://torrid-torch-6578.firebaseio.com/users')
+  var authData = ref.getAuth();
+  var friendsRef = new Firebase('https://torrid-torch-6578.firebaseio.com/users/'+authData.uid+'/friends')
+
+  $scope.getProfileInfo = function() {
+    return usersFactory.getUser(authData.uid).then(function(data){
+      $scope.email = data.data.email;
+      $scope.name = data.data.name;
+      console.log($scope.name);
+    })
+  };
+
+  $scope.getAllUsers = function() {
+    usersRef.on('value', function(snapshot){
+      $scope.allUsers = snapshot.val();
+      console.log($scope.allUsers);
+    })
+
+  }
+
+  $scope.getFriends = function(){
+    friendsRef.on('value', function(snapshot){
+      $scope.allFriends = snapshot.val();
+      console.log($scope.allFriends);
+    })
+  };
+
+  $scope.addFriend = function(user) {
+    var friendUid = user.uid;
+    usersFactory.addFriend(authData.uid, user, friendUid);
+  };
+
+
+
+  $ionicModal.fromTemplateUrl('templates/friends.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal){
+    $scope.modal = modal;
+  });
+
+  $scope.closeFriends = function() {
+    $scope.modal.hide();
+  };
+
+  $scope.showFriends = function() {
+    $scope.modal.show();
+
+  };
+
+
+
 
 
 
@@ -311,6 +428,24 @@ $scope.login = function() {
 
 .controller('MapController', function($scope, $ionicLoading, eventFactory, eventService) {
  
+
+
+  var ref = new Firebase('https://torrid-torch-6578.firebaseio.com');
+  var authData = ref.getAuth();
+
+  try { 
+  var profileInfo = usersFactory.getUser(authData.uid)
+  $scope.userName = authData.uid; 
+  console.log("dude is back" + $scope.userName); 
+  } catch (e) {
+    console.log("not logged in, go log in homie"); 
+  }
+
+
+$scope.allEventsShowing = false; 
+$scope.showAll; 
+
+
     $scope.initialise = function() {
         var myLatlng = new google.maps.LatLng(37.3000, -120.4833);
  
@@ -333,7 +468,69 @@ $scope.login = function() {
 
         $scope.map = map;
 
-        return eventFactory.getEventsForMap().then(function(data) { 
+        
+
+
+
+
+
+};
+
+google.maps.event.addDomListener(document.getElementById("map"), 'load', $scope.initialise())
+    
+
+    $scope.getEventsForMap = function(){
+        return eventFactory.getEventsForMap($scope.userName).then(function(data) { 
+              var array = []; 
+              
+              array = Object.keys(data.data.invited);
+              
+              $scope.events = []; 
+             
+             
+              for(var i=0; i < array.length; i++){
+              $scope.events[i] = data.data.invited[array[i]]; 
+              console.log($scope.events[i]); 
+               }
+                  
+    });
+  };
+
+  $scope.plotOnMap = function(name){
+            var geocoder;
+            var map;
+            var address = name; 
+            
+            geocoder = new google.maps.Geocoder();
+            var latlng = new google.maps.LatLng(-34.397, 150.644);
+     
+
+            var myOptions = {
+              zoom: 8,
+              center: latlng,
+              mapTypeId: google.maps.MapTypeId.ROADMAP
+    }
+    map = new google.maps.Map(document.getElementById("map"), myOptions);
+
+        geocoder.geocode( { 'address': address}, function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+        map.setCenter(results[0].geometry.location);
+        var marker = new google.maps.Marker({
+            map: map,
+            position: results[0].geometry.location
+        });
+                }
+
+            })
+
+ 
+};
+
+$scope.plotAllOnMap = function(showAll){
+  if (showAll == false){ 
+       $scope.initialise();  
+        } else { 
+    return eventFactory.getEventsForMap($scope.userName).then(function(data) { 
               var array = [];               
               array = Object.keys(data.data.invited);
               $scope.events = []; 
@@ -384,29 +581,138 @@ $scope.login = function() {
 });
 
 
-    };
-
-    google.maps.event.addDomListener(document.getElementById("map"), 'load', $scope.initialise())
-
-
-    $scope.getEventsForMap = function(){
-        return eventFactory.getEventsForMap().then(function(data) { 
-              var array = []; 
-              
-              array = Object.keys(data.data.invited);
-              
-              $scope.events = []; 
-             
-             
-              for(var i=0; i < array.length; i++){
-              $scope.events[i] = data.data.invited[array[i]]; 
-              console.log($scope.events[i]); 
-               }
-                  
-    });
-  };
+}
+};
+})
  
+ 
+.controller('VoteController',function($scope,$ionicPopup, $state, $window){
+        console.log("vote controller");
+
+        $scope.items=[];
+        $scope.showPopup = function() {
+            $scope.data = {}
+
+            // An elaborate, custom popup
+            var myPopup = $ionicPopup.show({
+                template: '<input type="text" ng-model="data.vote">',
+                title: 'Enter New Option',
+                subTitle: 'Add New Option',
+                scope: $scope,
+                buttons: [
+                    { text: 'Cancel' },
+                    {
+                        text: '<b>Add</b>',
+                        type: 'button-positive',
+                        onTap: function(e) {
+                            if (!$scope.data.vote) {
+                                //don't allow the user to close unless he enters wifi password
+                                e.preventDefault();
+                                console.log("FAGGOT");
+                            } else {
+                              console.log("TESTERINO");
+                                return $scope.data;
+                              console.log("Test 2");
+                            }
+                        }
+                    },
+                ]
+            });
+            myPopup.then(function(res) {
+                console.log('Tapped!', res);
+                if(typeof res!='undefined')
+                  res.close="ion-close";
+                $scope.items.push(res)
+
+                console.log($scope.items);
+                console.log('Testing123');
+            });
+           /* $timeout(function() {
+                myPopup.close(); //close the popup after 3 seconds for some reason
+            }, 3000);*/
+          $scope.removeTestCase=function(){
+          $scope.remove();
+           };
+          };
+
+         $scope.addVoteOption=function(){
+            $scope.showPopup();
+        };
+
+        $scope.remove = function(item) {
+        $scope.items.splice($scope.items.indexOf(item), 1);
+      };
+
+      $scope.returnEvent = function() {
+        $scope.confirmEvent();
+        // $state.go('app.events');
+      };
+
+      $scope.toKontributeList = function() {
+        $state.go('app.kontribution');
+      };
+
+})
+
+.controller('KontributeController',function($scope,$ionicPopup, $state, $window){
+        console.log("kontribute controller");
+
+        $scope.items=[];
+        $scope.showPopup = function() {
+            $scope.data = {}
+
+            // An elaborate, custom popup
+            var myPopup = $ionicPopup.show({
+                template: '<input type="text" ng-model="data.kontribute">',
+                title: 'Enter New Option',
+                subTitle: 'Add New Option',
+                scope: $scope,
+                buttons: [
+                    { text: 'Cancel' },
+                    {
+                        text: '<b>Add</b>',
+                        type: 'button-positive',
+                        onTap: function(e) {
+                            if (!$scope.data.kontribute) {
+                                //don't allow the user to close unless he enters wifi password
+                                e.preventDefault();
+                                console.log("FAGGOT");
+                            } else {
+                              console.log("TESTERINO");
+                                return $scope.data;
+                              console.log("Test 2");
+                            }
+                        }
+                   },
+                ]
+            });
+            myPopup.then(function(res) {
+                console.log('Tapped!', res);
+                if(typeof res!='undefined')
+                  res.close="ion-close";
+                $scope.items.push(res)
+
+                console.log($scope.items);
+                console.log('Testing123');
+            });
+           /* $timeout(function() {
+                myPopup.close(); //close the popup after 3 seconds for some reason
+            }, 3000);*/
+          $scope.removeTestCase=function(){
+          $scope.remove();
+           };
+          };
+
+         $scope.addKontributeOption=function(){
+            $scope.showPopup();
+        };
+
+        $scope.remove = function(item) {
+        $scope.items.splice($scope.items.indexOf(item), 1);
+      };
+
+      $scope.returnEvent = function() {
+        $scope.confirmEvent();
+        $state.go('app.events');
+      };
 });
-
-
- 

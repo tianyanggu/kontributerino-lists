@@ -89,24 +89,25 @@ angular.module('kontribute', ['ionic', 'kontribute.controllers', 'kontribute.ser
               }
           })
 
+          .state('app.vote', {
+          url: "/vote",
+          views: {
+            'menuContent': {
+              templateUrl: "templates/vote.html"
 
-        .state('app.past', {
-            url: "/past",
-            views: {
-                'menuContent': {
-                    templateUrl: "templates/past.html"
-                }
             }
+          }
         })
 
-        .state('app.kontribute', {
-            url: "/kontribute",
-            views: {
-                'menuContent': {
-                    templateUrl: "templates/kontribute.html"
-                }
+        .state('app.kontribution', {
+          url: "/kontribution",
+          views: {
+            'menuContent': {
+              templateUrl: "templates/kontribution.html"
             }
+          }
         })
+
 
           .state('app.events', {
             url: "/events",
@@ -117,11 +118,20 @@ angular.module('kontribute', ['ionic', 'kontribute.controllers', 'kontribute.ser
             }
         })
 
-          .state('app.currkontribute', {
+        .state('app.currkontribute', {
             url: "/currkontribute",
             views: {
                 'menuContent': {
                     templateUrl: "templates/currkontribute.html"
+                }
+            }
+        })
+
+        .state('app.kontribute', {
+            url: "/kontribute",
+            views: {
+                'menuContent': {
+                    templateUrl: "templates/kontribute.html"
                 }
             }
         })
